@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#fff2f7">
+  <title>綽貓喵・可愛相機</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/editor.css">
+</head>
+<body>
+  <main class="app-shell">
+    <!-- 介面框只作為操作 UI，不會匯出到照片 -->
+    <header class="top-ui">
+      <img class="top-frame" src="assets/interface/frame-top.png" alt="">
+      <div class="brand">
+        <span class="brand-title">綽貓喵・可愛相機</span>
+        <span class="brand-subtitle">把可愛放進每一張照片 ♡</span>
+      </div>
+      <button id="powerBtn" class="tiny-button" aria-label="回到開始畫面" title="回到開始畫面">⌂</button>
+    </header>
+
+    <section id="workspace" class="workspace" aria-label="照片編輯區">
+      <div id="emptyState" class="empty-state">
+        <div class="empty-heart">♡</div>
+        <h1>準備好拍一張可愛照片了嗎？</h1>
+        <p>開啟相機，或先選一張照片開始創作。</p>
+        <button id="startCameraBtn" class="primary-button">開啟相機</button>
+        <label class="primary-button secondary-button" for="photoInput">選擇照片</label>
+      </div>
+      <video id="cameraVideo" autoplay playsinline muted></video>
+      <img id="capturedPhoto" alt="目前編輯中的照片">
+      <div id="stickerLayer" class="sticker-layer" aria-label="貼圖與文字圖層"></div>
+      <div class="workspace-hint" id="workspaceHint">先開啟相機或選擇照片 ✨</div>
+    </section>
+
+    <footer class="bottom-ui">
+      <img class="bottom-frame" src="assets/interface/frame-bottom.png" alt="">
+      <img class="ribbon-decoration" src="assets/interface/deco-ribbon.png" alt="">
+      <img id="cheukcatMascot" class="mascot" src="assets/interface/cheukcat-camera.png" alt="綽貓喵拿著相機">
+      <div class="controls">
+        <button id="cameraToggleBtn" class="control-button" title="開啟／關閉相機">
+          <img src="assets/interface/buttons/icon-camera-toggle.png" alt=""><span>相機</span>
+        </button>
+        <button id="flipCameraBtn" class="control-button" title="切換前後鏡頭" disabled>
+          <img src="assets/interface/buttons/icon-camera-flip.png" alt=""><span>前後鏡</span>
+        </button>
+        <button id="stickerBtn" class="control-button" title="加入角色與 PNG 貼圖">
+          <img src="assets/interface/buttons/icon-sticker.png" alt=""><span>貼圖</span>
+        </button>
+        <button id="textBtn" class="control-button" title="加入文字">
+          <img src="assets/interface/buttons/icon-text.png" alt=""><span>文字</span>
+        </button>
+        <button id="shutterBtn" class="shutter-button" title="拍照" aria-label="拍照"><span></span></button>
+      </div>
+      <div class="bottom-actions">
+        <button id="mascotToggleBtn" class="pill-button">隱藏綽貓</button>
+        <button id="exportBtn" class="pill-button" disabled>儲存照片</button>
+        <label class="pill-button" for="photoInput">載入照片</label>
+        <input id="photoInput" type="file" accept="image/*" hidden>
+      </div>
+    </footer>
+  </main>
+
+  <aside id="stickerPanel" class="side-panel" aria-hidden="true">
+    <div class="panel-heading"><h2>選擇貼圖</h2><button class="close-panel" data-close="stickerPanel" aria-label="關閉">×</button></div>
+    <p class="panel-note">點選貼圖加入照片；按「＋」可匯入自己的透明 PNG。</p>
+    <div class="sticker-grid">
+      <button id="addCustomSticker" class="sticker-option add-option"><span>＋</span><small>加入 PNG</small></button>
+      <button class="sticker-option" data-sticker="assets/characters/character_samon_cat.png"><img src="assets/characters/character_samon_cat.png" alt=""><small>三文貓</small></button>
+      <button class="sticker-option" data-sticker="assets/characters/character_onion_pig.png"><img src="assets/characters/character_onion_pig.png" alt=""><small>蔥豬</small></button>
+      <button class="sticker-option" data-sticker="assets/characters/character_big_nose.png"><img src="assets/characters/character_big_nose.png" alt=""><small>大鼻哥</small></button>
+      <button class="sticker-option" data-sticker="assets/interface/frame-polaroid.png"><img src="assets/interface/frame-polaroid.png" alt=""><small>拍立得框</small></button>
+      <button class="sticker-option" data-sticker="assets/interface/deco-ribbon.png"><img src="assets/interface/deco-ribbon.png" alt=""><small>蝴蝶結</small></button>
+    </div>
+    <input id="customStickerInput" type="file" accept="image/png" hidden>
+    <div class="panel-footer">選中照片上的貼圖後，可拖曳移動、拉角落調整大小，或刪除。</div>
+  </aside>
+
+  <div id="textDialog" class="dialog-backdrop" hidden>
+    <form id="textForm" class="text-dialog">
+      <div class="panel-heading"><h2>加入文字</h2><button type="button" class="close-panel" id="cancelText" aria-label="關閉">×</button></div>
+      <label for="textContent">文字內容</label>
+      <textarea id="textContent" rows="2" maxlength="120" placeholder="寫一句可愛的話吧…"></textarea>
+      <div class="form-row">
+        <label>字體
+          <select id="textFont"><option value="system-ui">圓潤黑體</option><option value="serif">復古襯線</option><option value="cursive">手寫風（依裝置支援）</option></select>
+        </label>
+        <label>文字顏色 <input id="textColor" type="color" value="#ffffff"></label>
+      </div>
+      <label>字體大小 <input id="textSize" type="range" min="14" max="64" value="28"></label>
+      <div class="dialog-actions"><button type="button" class="pill-button" id="cancelText2">取消</button><button type="submit" class="primary-button">加入照片</button></div>
+    </form>
+  </div>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script src="js/camera.js"></script>
+  <script src="js/stickers.js"></script>
+  <script src="js/text-tool.js"></script>
+  <script src="js/photo-export.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
