@@ -1,0 +1,31 @@
+/* =========================================================
+   工作區貼圖／文字編輯
+   想改貼圖預設大小，調整 --sticker-default-width。
+   ========================================================= */
+:root { --sticker-default-width: 28%; }
+.sticker-layer { position: absolute; inset: 0; z-index: 5; overflow: hidden; pointer-events: none; }
+.canvas-item {
+  position: absolute; left: 50%; top: 50%; width: var(--sticker-default-width);
+  min-width: 34px; transform: translate(-50%, -50%); pointer-events: auto;
+  touch-action: none; user-select: none; cursor: grab;
+}
+.canvas-item img { display: block; width: 100%; height: auto; pointer-events: none; user-select: none; }
+.canvas-item.is-selected { outline: 2px dashed #ff8db8; outline-offset: 2px; }
+.canvas-item .resize-handle {
+  display: none; position: absolute; width: 18px; height: 18px; right: -9px; bottom: -9px;
+  border: 2px solid #fff; border-radius: 50%; background: #e86d9c; box-shadow: 0 1px 5px #6b294550;
+  touch-action: none; cursor: nwse-resize;
+}
+.canvas-item.is-selected .resize-handle { display: block; }
+.canvas-item .delete-item {
+  display: none; position: absolute; top: -14px; right: -14px; width: 26px; height: 26px;
+  border: 2px solid white; border-radius: 50%; color: white; background: #cf557f; font-size: 17px; line-height: 1;
+}
+.canvas-item.is-selected .delete-item { display: block; }
+.text-item {
+  width: auto; max-width: 90%; min-width: 40px; white-space: pre-wrap; text-align: center;
+  font-size: 28px; font-weight: 800; line-height: 1.25; color: white;
+  text-shadow: 0 2px 4px #442333a8, 0 0 2px #442333;
+  padding: 3px 5px; overflow-wrap: anywhere;
+}
+.text-item .resize-handle { right: -8px; bottom: -8px; }

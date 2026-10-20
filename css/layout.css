@@ -1,0 +1,33 @@
+/* =========================================================
+   版面配置：手機直向／橫向
+   上下介面框不變形；中間工作區自動填滿剩餘空間。
+   ========================================================= */
+@media (max-height: 700px) and (orientation: portrait) {
+  :root { --top-ui-height: 88px; --bottom-ui-height: 145px; }
+  .brand { top: 20%; }
+  .controls { top: 8%; height: 55%; }
+  .bottom-actions { bottom: 3%; }
+  .mascot { width: clamp(60px, 18vw, 88px); }
+}
+@media (orientation: landscape) {
+  :root { --top-ui-height: 70px; --bottom-ui-height: 100px; }
+  .top-ui { width: 100%; }
+  .brand { top: 16%; left: 3%; }
+  .brand-title { font-size: 17px; }
+  .brand-subtitle { font-size: 10px; }
+  .controls { left: 18%; right: 3%; top: 4%; height: 66%; }
+  .control-button { flex-direction: row; gap: 4px; font-size: 10px; }
+  .control-button img { width: 30px; height: 27px; }
+  .shutter-button { width: 43px; }
+  .mascot { width: 75px; left: 1%; bottom: 0; }
+  .ribbon-decoration { width: 90px; }
+  .bottom-actions { bottom: 7%; right: 2%; }
+}
+@media (min-width: 700px) {
+  .app-shell { max-width: 900px; margin: 0 auto; box-shadow: 0 0 40px #8e536a18; }
+  .top-ui { height: 125px; }
+  .bottom-ui { height: 180px; }
+  .controls { left: 18%; }
+  .mascot { width: 125px; }
+  .side-panel { left: auto; right: max(0px, calc((100vw - 900px) / 2)); width: 390px; border-radius: 22px 22px 0 0; }
+}
